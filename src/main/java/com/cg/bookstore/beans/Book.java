@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-public class Books {
+public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,18 +23,18 @@ public class Books {
     private double rating;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("books_author")
     private Author author;
     
     @ManyToOne
-    @JsonBackReference
-    private Orders order;
+    @JsonBackReference("order_books")
+    private Ordered order;
     
     @ManyToOne
-   @JsonBackReference
+    @JsonBackReference("category_books")
     private  Category category;
 
-    private Books(){
+    private Book(){
     }
 
 	public int getBookId() {
@@ -101,16 +101,16 @@ public class Books {
 		this.author = author;
 	}
 
-	public Orders getOrder() {
+	public Ordered getOrder() {
 		return order;
 	}
 
-	public void setOrder(Orders order) {
+	public void setOrder(Ordered order) {
 		this.order = order;
 	}
 
-	public Books(int bookId, double price, int publishYear, String publisher, String title, String summaryDetails,
-			double rating, Author author, Orders order, Category category) {
+	public Book(int bookId, double price, int publishYear, String publisher, String title, String summaryDetails,
+			double rating, Author author, Ordered order, Category category) {
 		super();
 		this.bookId = bookId;
 		this.price = price;

@@ -14,16 +14,16 @@ public class Category {
     private String categoryName;
 
     @OneToMany(mappedBy = "category" , fetch = FetchType.EAGER ,cascade = CascadeType.ALL)
-   @MapKey
-   @JsonManagedReference
-    private Map<Integer,Books> books;
+    @MapKey
+    @JsonManagedReference("category_books")
+    private Map<Integer,Book> books;
 
     @OneToMany(mappedBy = "category" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @MapKey
-    @JsonManagedReference
+    @JsonManagedReference("author_category")
     private Map<Integer,Author> authors;
 
-    public Category(int categoryId , String categoryName, Map<Integer, Books> books, Map<Integer, Author> authors) {
+    public Category(int categoryId , String categoryName, Map<Integer, Book> books, Map<Integer, Author> authors) {
         super();
         this.categoryName = categoryName;
         this.books = books;
@@ -47,11 +47,11 @@ public class Category {
         this.categoryName = categoryName;
     }
 
-    public Map<Integer, Books> getBooks() {
+    public Map<Integer, Book> getBooks() {
         return books;
     }
 
-    public void setBooks(Map<Integer, Books> books) {
+    public void setBooks(Map<Integer, Book> books) {
         this.books = books;
     }
 

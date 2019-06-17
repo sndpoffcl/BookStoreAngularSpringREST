@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Comments {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int commentId;
@@ -18,7 +18,7 @@ public class Comments {
     private int commentedbyBookId;
     private int commentedBycustomerId;
 
-    public  Comments(){
+    public  Comment(){
 
     }
 
@@ -32,7 +32,7 @@ public class Comments {
         this.commentId = commentId;
     }
 
-    public Comments(int commentId, String commentString, Date timeStamp, int commentedBycustomerId) {
+    public Comment(int commentId, String commentString, Date timeStamp, int commentedBycustomerId) {
 		super();
 		this.commentId = commentId;
 		this.commentString = commentString;

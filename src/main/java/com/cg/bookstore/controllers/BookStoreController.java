@@ -19,17 +19,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.bookstore.beans.Admin;
-import com.cg.bookstore.beans.Customers;
+import com.cg.bookstore.beans.Author;
+import com.cg.bookstore.beans.Book;
+import com.cg.bookstore.beans.Category;
+import com.cg.bookstore.beans.Comment;
+import com.cg.bookstore.beans.Customer;
+import com.cg.bookstore.beans.Ordered;
 import com.cg.bookstore.exceptions.AdmintNotFoundException;
+import com.cg.bookstore.exceptions.AuthorNotFoundException;
+import com.cg.bookstore.exceptions.BookNotFoundException;
+import com.cg.bookstore.exceptions.CategoryNotFoundException;
+import com.cg.bookstore.exceptions.CommentNotFoundException;
 import com.cg.bookstore.exceptions.CustomerNotFoundException;
-import com.cg.bookstore.services.BookServices;
+import com.cg.bookstore.exceptions.OrderNotFoundException;
+import com.cg.bookstore.services.BookStoreServices;
 
 @RestController
 @CrossOrigin(origins = "http:localhost:4200")
 public class BookStoreController {
 	
 	@Autowired
-	BookServices bookServices;
+	BookStoreServices bookStoreServices;
 	
 	@RequestMapping(value= {"/sayHello"},method=RequestMethod.GET)
 	public ResponseEntity<String> sayHello(){
@@ -37,46 +47,158 @@ public class BookStoreController {
 	}
 	
 	//CUSTOMER CONTROLLER
-	@PostMapping(value="/newCustomer",consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE,headers="Accept=application/json")
-	void newCustomer(@RequestBody Customers customer) {	
-		bookServices.createNewCustomer(customer);
+	@PostMapping(value="/newCustomer",consumes=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+	void newCustomer(@RequestBody Customer customer) {	
+		bookStoreServices.createNewCustomer(customer);
 	}
 	
 	@GetMapping("/getCustomerDetails")
-    public Customers getCustomerDetails(@RequestParam int customerId) throws CustomerNotFoundException{
-        return bookServices.getCustomerDetails(customerId);
+    public Customer getCustomerDetails(@RequestParam int customerId) throws CustomerNotFoundException{
+		System.out.println(bookStoreServices.getCustomerDetails(customerId));
+        return bookStoreServices.getCustomerDetails(customerId);
     }
 	
 	@RequestMapping(value="/getAllCustomerDetails",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-	public List<Customers> findAllCustomers() {
-		  return bookServices.getAllCustomersDetails();
+	public List<Customer> findAllCustomers() {
+		  return bookStoreServices.getAllCustomersDetails();
 	}
 
 	@DeleteMapping("/deleteCustomer")
 	public ResponseEntity<String> removeCustomerDetails(@RequestParam int customerId) throws CustomerNotFoundException{
-		bookServices.deleteCustomer(customerId);
+		bookStoreServices.deleteCustomer(customerId);
 		return new ResponseEntity<>("Customer details successfully removed ",HttpStatus.OK);
 	}
 
 	//ADMIN CONTROLLER
 	@PostMapping(value="/newAdmin",consumes=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
 	void newAdmin(@RequestBody Admin admin) {	
-		bookServices.createNewAdmin(admin);
+		bookStoreServices.createNewAdmin(admin);
 	}
 	
 	@GetMapping("/getAdminDetails")
     public Admin getAdminDetails(@RequestParam int adminId) throws AdmintNotFoundException{
-        return bookServices.getAdminDetails(adminId);
+        return bookStoreServices.getAdminDetails(adminId);
     }
 	
 	@GetMapping(value="/getAllAdminDetails",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
 	public List<Admin> findAllAdmin() {
-		  return bookServices.getAllAdminDetails();
+		  return bookStoreServices.getAllAdminDetails();
 	}
 
 	@DeleteMapping("/deleteAdmin")
 	public ResponseEntity<String> removeAdminDetails(@RequestParam int adminId) throws AdmintNotFoundException{
-		bookServices.deleteAdmin(adminId);
-		return new ResponseEntity<>("Customer details successfully removed ",HttpStatus.OK);
+		bookStoreServices.deleteAdmin(adminId);
+		return new ResponseEntity<>("Admin details successfully removed ",HttpStatus.OK);
 	}
+	
+	//AUTHOR CONTROLLER
+	@PostMapping(value="/newAuthor",consumes=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+	void newAuthor(@RequestBody Author author) {	
+		bookStoreServices.createNewAuthor(author);
+	}
+	
+	@GetMapping("/getAuthorDetails")
+    public Author getAuthorDetails(@RequestParam int authorId) throws AuthorNotFoundException{
+        return bookStoreServices.getAuthorDetails(authorId);
+    }
+	
+	@GetMapping(value="/getAllAuthorDetails",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+	public List<Author> findAllAuthors() {
+		  return bookStoreServices.getAllAuthorDetails();
+	}
+
+	@DeleteMapping("/deleteAuthor")
+	public ResponseEntity<String> removeAuthorDetails(@RequestParam int authorId) throws AuthorNotFoundException{
+		bookStoreServices.deleteAuthor(authorId);
+		return new ResponseEntity<>("Author details successfully removed ",HttpStatus.OK);
+	}
+	
+	//BOOK CONTROLLER
+	@PostMapping(value="/newBooks",consumes=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+	void newBooks(@RequestBody Book book) {	
+		bookStoreServices.createNewBook(book);
+	}
+	
+	@GetMapping("/getBooksDetails")
+    public Book getBooksDetails(@RequestParam int bookId) throws BookNotFoundException{
+        return bookStoreServices.getBookDetails(bookId);
+    }
+	
+	@GetMapping(value="/getAllBooksDetails",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+	public List<Book> findAllBooks() {
+		  return bookStoreServices.getAllBookDetails();
+	}
+
+	@DeleteMapping("/deleteBooks")
+	public ResponseEntity<String> removeBookDetails(@RequestParam int bookId) throws BookNotFoundException{
+		bookStoreServices.deleteBook(bookId);
+		return new ResponseEntity<>("Book details successfully removed ",HttpStatus.OK);
+	}
+	
+	//CATEGORY CONTROLLER
+	@PostMapping(value="/newCategory",consumes=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+	void newCategory(@RequestBody Category category) {	
+		bookStoreServices.createNewCategory(category);
+	}
+	
+	@GetMapping("/getCategoryDetails")
+    public Category getCategoryDetails(@RequestParam int categoryId) throws CategoryNotFoundException{
+        return bookStoreServices.getCategoryDetails(categoryId);
+    }
+	
+	@GetMapping(value="/getAllCategoryDetails",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+	public List<Category> findAllCategory() {
+		  return bookStoreServices.getAllCategoryDetails();
+	}
+
+	@DeleteMapping("/deleteCategory")
+	public ResponseEntity<String> removeCategoryDetails(@RequestParam int categoryId) throws CategoryNotFoundException{
+		bookStoreServices.deleteCategory(categoryId);
+		return new ResponseEntity<>("Category details successfully removed ",HttpStatus.OK);
+	}
+	
+	//COMMENT CONTROLLER
+	@PostMapping(value="/newComment",consumes=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+	void newComment(@RequestBody Comment comment) {	
+		bookStoreServices.createNewComment(comment);
+	}
+		
+	@GetMapping("/getCommentsDetails")
+    public Comment getCommentDetails(@RequestParam int commentId) throws CommentNotFoundException{
+       return bookStoreServices.getCommentDetails(commentId);
+	}
+		
+	@GetMapping(value="/getAllCommentsDetails",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+	public List<Comment> findAllComments() {
+		return bookStoreServices.getAllCommentDetails();
+	}
+
+	@DeleteMapping("/deleteComments")
+	public ResponseEntity<String> removeCommentsDetails(@RequestParam int commentId) throws CommentNotFoundException{
+		bookStoreServices.deleteComment(commentId);
+		return new ResponseEntity<>("Comment details successfully removed ",HttpStatus.OK);
+	}
+	
+	//ORDER CONTROLLER
+	@PostMapping(value="/newOrdered",consumes=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+	void newOrdered(@RequestBody Ordered ordered) {	
+		bookStoreServices.createNewOrder(ordered);
+	}
+			
+	@GetMapping("/getOrderedDetails")
+    public Ordered getOrderDetails(@RequestParam int orderedId) throws OrderNotFoundException{
+       return bookStoreServices.getOrderDetails(orderedId);	
+    }
+			
+	@GetMapping(value="/getAllOrderedDetails",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+	public List<Ordered> findAllOrders() {
+		return bookStoreServices.getAllOrderDetails();
+	}
+
+	@DeleteMapping("/deleteOrdered")
+	public ResponseEntity<String> removeOrderDetails(@RequestParam int orderedId) throws OrderNotFoundException{
+		bookStoreServices.deleteOrder(orderedId);
+		return new ResponseEntity<>("Ordered details successfully removed ",HttpStatus.OK);
+	}
+	
 }

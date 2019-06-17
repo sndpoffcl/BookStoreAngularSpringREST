@@ -9,11 +9,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
-public class Customers {
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,12 +28,20 @@ public class Customers {
     private String password;
     
 
-	@ManyToOne
-    //@JsonBackReference
-    private Books books;
+    @Override
+	public String toString() {
+		return "Customers [customerId=" + customerId + ", customerFirstName=" + customerFirstName
+				+ ", customerLastName=" + customerLastName + ", email=" + email + ", phoneNumber=" + phoneNumber
+				+ ", password=" + password + ", orders=" + orders + "]";
+	}
+
+	@OneToMany(mappedBy = "customer" , fetch =FetchType.EAGER , cascade = CascadeType.ALL)
+    @MapKey
+    @JsonManagedReference("customer_order")
+    private Map<Integer , Ordered> orders;
    
-    public Customers(int customerId, String customerFirstName, String customerLastName, String email,
-			String phoneNumber, String password, Books books) {
+    public Customer(int customerId, String customerFirstName, String customerLastName, String email,
+			String phoneNumber, String password) {
 		super();
 		this.customerId = customerId;
 		this.customerFirstName = customerFirstName;
@@ -39,7 +49,6 @@ public class Customers {
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 		this.password = password;
-		this.books = books;
 	}
 
 
@@ -92,15 +101,7 @@ public class Customers {
 		this.password = password;
 	}
 
-	public Books getBooks() {
-		return books;
-	}
-
-	public void setBooks(Books books) {
-		this.books = books;
-	}
-
-    public Customers(){
+    public Customer(){
 
     }
 

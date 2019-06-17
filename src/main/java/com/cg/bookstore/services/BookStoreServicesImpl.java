@@ -5,11 +5,11 @@ import org.springframework.stereotype.Component;
 
 import com.cg.bookstore.beans.Admin;
 import com.cg.bookstore.beans.Author;
-import com.cg.bookstore.beans.Books;
+import com.cg.bookstore.beans.Book;
 import com.cg.bookstore.beans.Category;
-import com.cg.bookstore.beans.Comments;
-import com.cg.bookstore.beans.Customers;
-import com.cg.bookstore.beans.Orders;
+import com.cg.bookstore.beans.Comment;
+import com.cg.bookstore.beans.Customer;
+import com.cg.bookstore.beans.Ordered;
 import com.cg.bookstore.dao.AdminDao;
 import com.cg.bookstore.dao.AuthorDao;
 import com.cg.bookstore.dao.BooksDao;
@@ -35,7 +35,7 @@ import com.cg.bookstore.exceptions.OrderNotFoundException;
 import java.util.List;
 
 @Component("bookServices")
-public class BookServicesImpl implements BookServices {
+public class BookStoreServicesImpl implements BookStoreServices {
 
     @Autowired
     private AdminDao adminDao;
@@ -62,19 +62,19 @@ public class BookServicesImpl implements BookServices {
 
     /*CUSTOMER SERVICES*/
     @Override
-    public Customers createNewCustomer(Customers customer) {
+    public Customer createNewCustomer(Customer customer) {
         return customerDao.save(customer);
     }
 
     @Override
-    public Customers getCustomerDetails(int customerId) throws CustomerNotFoundException {
+    public Customer getCustomerDetails(int customerId) throws CustomerNotFoundException {
         return customerDao.findById(customerId).orElseThrow(
                 ()->new CustomerNotFoundException("Customer for the given details doesnt exist" ));
     }
 
     @Override
-    public List<Customers> getAllCustomersDetails() {
-        List<Customers> customers = customerDao.findAll();
+    public List<Customer> getAllCustomersDetails() {
+        List<Customer> customers = customerDao.findAll();
         if(customers.isEmpty())
             throw new CustomerListEmptyException("No Customer Found");
         else
@@ -145,18 +145,18 @@ public class BookServicesImpl implements BookServices {
 
     /*BOOK SERVICES*/
     @Override
-    public Books createNewBook(Books book) {
+    public Book createNewBook(Book book) {
         return booksDao.save(book);
     }
 
     @Override
-    public Books getBookDetails(int bookId) throws BookNotFoundException {
+    public Book getBookDetails(int bookId) throws BookNotFoundException {
         return booksDao.findById(bookId).orElseThrow(()-> new BookNotFoundException("Book doesnt exist for the given details"));
     }
 
     @Override
-    public List<Books> getAllBookDetails() {
-        List<Books> books = booksDao.findAll();
+    public List<Book> getAllBookDetails() {
+        List<Book> books = booksDao.findAll();
         if(books.isEmpty())
             throw new BooksListEmptyException("Book list is empty");
         else
@@ -198,18 +198,18 @@ public class BookServicesImpl implements BookServices {
 
     /*COMMENT SERVICES*/
     @Override
-    public Comments createNewComment(Comments comment) {
+    public Comment createNewComment(Comment comment) {
         return commentsDao.save(comment);
     }
 
     @Override
-    public Comments getCommentDetails(int commentId) throws CommentNotFoundException {
+    public Comment getCommentDetails(int commentId) throws CommentNotFoundException {
         return commentsDao.findById(commentId).orElseThrow(()-> new CommentNotFoundException("Comment doesnt exist for the given details"));
     }
 
     @Override
-    public List<Comments> getAllCommentDetails() {
-        List<Comments> comments = commentsDao.findAll();
+    public List<Comment> getAllCommentDetails() {
+        List<Comment> comments = commentsDao.findAll();
         if(comments.isEmpty())
             throw new CommentListEmptExceptions("Comment list is empty");
         else
@@ -224,18 +224,18 @@ public class BookServicesImpl implements BookServices {
 
     /*ORDER SERVICES*/
     @Override
-    public Orders createNewOrder(Orders order) {
+    public Ordered createNewOrder(Ordered order) {
         return ordersDao.save(order);
     }
 
     @Override
-    public Orders getOrderDetails(int orderId) throws OrderNotFoundException {
+    public Ordered getOrderDetails(int orderId) throws OrderNotFoundException {
         return ordersDao.findById(orderId).orElseThrow( ()-> new OrderNotFoundException("Order doesnt exist for the given details"));
     }
 
     @Override
-    public List<Orders> getAllOrderDetails() {
-        List<Orders> orders = ordersDao.findAll();
+    public List<Ordered> getAllOrderDetails() {
+        List<Ordered> orders = ordersDao.findAll();
         if(orders.isEmpty())
             throw new OrderListEmptyException("Order list is empty");
         else

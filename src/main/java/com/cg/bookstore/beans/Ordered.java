@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Map;
 
 @Entity
-public class Orders {
+public class Ordered {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int orderId;
@@ -18,12 +18,19 @@ public class Orders {
 
     @OneToMany(mappedBy = "order" , fetch =FetchType.EAGER , cascade = CascadeType.ALL)
     @MapKey
-    @JsonManagedReference
-    private Map<Integer , Books> books;
+    @JsonManagedReference("order_books")
+    private Map<Integer , Book> books;
 
-    private int orderedBycustomerId;
+    public Ordered() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-    public Orders(Date orderDate, String orderStatus, Map<Integer, Books> books, Customers customer , int orderId) {
+	@ManyToOne
+    @JsonBackReference("customer_order")
+    private Customer customer;
+
+    public Ordered(Date orderDate, String orderStatus, Map<Integer, Book> books, Customer customer , int orderId) {
         super();
         this.orderId = orderId;
         this.orderDate = orderDate;
@@ -55,11 +62,11 @@ public class Orders {
         this.orderStatus = orderStatus;
     }
 
-    public Map<Integer, Books> getBooks() {
+    public Map<Integer, Book> getBooks() {
         return books;
     }
 
-    public void setBooks(Map<Integer, Books> books) {
+    public void setBooks(Map<Integer, Book> books) {
         this.books = books;
     }
 

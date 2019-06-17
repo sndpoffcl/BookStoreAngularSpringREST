@@ -18,19 +18,19 @@ public class Author {
     private Date dateOfBirth;
 
     @OneToMany(mappedBy = "author" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-  @MapKey
-   @JsonManagedReference
-    private Map<Integer , Books> books;
+    @MapKey
+    @JsonManagedReference("books_author")
+    private Map<Integer , Book> books;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("author_category")
     private Category category;
 
     private Author(){
 
     }
 
-    public Author(String authorName, Date dateOfBirth, Map<Integer, Books> books, Category category , int authorId) {
+    public Author(String authorName, Date dateOfBirth, Map<Integer, Book> books, Category category , int authorId) {
         super();
         this.authorName = authorName;
         this.dateOfBirth = dateOfBirth;
@@ -63,11 +63,11 @@ public class Author {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Map<Integer, Books> getBooks() {
+    public Map<Integer, Book> getBooks() {
         return books;
     }
 
-    public void setBooks(Map<Integer, Books> books) {
+    public void setBooks(Map<Integer, Book> books) {
         this.books = books;
     }
 
